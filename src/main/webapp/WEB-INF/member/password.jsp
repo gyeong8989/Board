@@ -8,16 +8,23 @@
 
 <%@include file="/resources/includes/link.jsp" %>
 <link rel="stylesheet" href="resources/ces/css/common.css">
-
+<%@page import="com.korea.dto.*" %>
+<%
+	MemberDTO dto = (MemberDTO)request.getAttribute("dto");
+%>
+<%
+	String MSG = (String)request.getAttribute("MSG"); 
+	if(MSG!=null)
+	{
+		%>
+			<script>
+				alert("<%=MSG%>");
+			</script>
+		<%
+	}
+%>
 </head>
 <body>
-	<%@page import="com.korea.dto.MemberDTO" %>
-	<%
-		MemberDTO dto = (MemberDTO)request.getAttribute("dto");
-	%>
-	
-	
-
 	<div class="container-md" id=wrapper style="width:80%;margin:100px auto;">
 		<!-- TopMenu -->
 		<%@include file="/resources/includes/topmenu.jsp" %>
@@ -31,31 +38,18 @@
 			<form action="/MemberUpdate.do" method="post">
 				<table class="table w-75 table-striped" style="margin:100px auto">
 					<tr>
-						<td>Email</td>
-						<td><input name=email value=<%=dto.getEmail() %> disabled ></td>
+						<td><input type=password name=pwd class=form-control></td>
 					</tr>
 					<tr>
-						<td>Addr1</td>
-						<td><input name=addr1 value=<%=dto.getAddr1() %> ></td>
-					</tr>
-					<tr>
-						<td>Addr2</td>
-						<td><input name=addr2 value=<%=dto.getAddr2() %> ></td>
-					</tr>
-					<tr>
-					<tr>
-						<td>PWD</td>
-						<td><input type=password  name=pwd value=<%=dto.getPwd() %>></td>
-					</tr>
-						<td>
-							<input type=submit value="정보수정" class="btn btn-primary w-50">
-						</td>
-						<td>
-							<a class="btn btn-secondary w-50">메인이동</a>
-						</td>
+						<td><input type="submit" value="확인" class="btn btn-primary"></td>
 					</tr>
 				</table>
+				<input type="hidden" name="flag" value="true">
+				<input type="hidden" name="addr1" value=<%=request.getParameter("addr1") %> >
+				<input type="hidden" name="addr2" value=<%=request.getParameter("addr2") %> >
+				<input type="hidden" name="newpwd" value=<%=request.getParameter("pwd") %> >
 			</form>
+			
 		</div>
 		
 		<!-- Footer  -->

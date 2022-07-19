@@ -41,6 +41,8 @@ public class MemberDAO {
 	public boolean insert(MemberDTO dto)
 	{
 		try {
+			
+			
 			pstmt=conn.prepareStatement("insert into tbl_member values(?,?,?,?,?)");
 			pstmt.setString(1, dto.getEmail());
 			pstmt.setString(2, dto.getPwd());
@@ -101,5 +103,27 @@ public class MemberDAO {
 		}
 		
 		return null;
+	}
+	
+	public boolean update(MemberDTO dto) {
+		
+		try {
+			pstmt=conn.prepareStatement("update tbl_member set addr1=?,addr2=?,grade=?,pwd=? where email=?");
+			pstmt.setString(1, dto.getAddr1());
+			pstmt.setString(2, dto.getAddr2());
+			pstmt.setInt(3, dto.getGrade());
+			pstmt.setString(4, dto.getPwd());
+			pstmt.setString(5,dto.getEmail());
+			
+			int result = pstmt.executeUpdate();
+			
+			if(result>0)
+				return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		
+		return false;
 	}
 }
