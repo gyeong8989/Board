@@ -2,6 +2,7 @@ package com.korea.controller.board;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -45,9 +46,11 @@ public class BoardListController implements SubController {
 			req.setAttribute("list", list); // key 와 value 로 저장 
 			req.setAttribute("tcnt", tcnt);// 담아서 리퀘스트 
 			//정리 6일차 (페이징처리) 추가?
+			//req.setAttribute("nowPage", nowPage);
 			
-			
-			req.setAttribute("nowPage", nowPage);
+			//쿠키생성(게시글읽기 새로고침시 중복 Count방지)
+			Cookie init = new Cookie("init","true");
+			resp.addCookie(init);
 			
 			req.getRequestDispatcher("/WEB-INF/board/list.jsp?nowPage="+nowPage).forward(req, resp);
 		} catch (Exception e) {
@@ -55,6 +58,7 @@ public class BoardListController implements SubController {
 			  
 			e.printStackTrace();
 		}
+		
 		
 
 	}

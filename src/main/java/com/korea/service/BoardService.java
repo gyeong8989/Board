@@ -208,7 +208,7 @@ public class BoardService {
 	{
 		String id = UUID.randomUUID().toString();
 		//압축파일 경로
-		String zipFileName="C:\\Users\\pdqqq\\Downloads/ALL_"+id+".zip";
+		String zipFileName="C://Users/pdqqq/Downloads/ALL_"+id+".zip";
 		
 		
 		//파일명,	//등록날짜 //이메일계정 가져오기
@@ -283,6 +283,34 @@ public class BoardService {
 	}
 
 	
+	public boolean UpdateBoard(BoardDTO dto) {
+		return dao.Update(dto);
+	}
 	
+	
+	public boolean BoardRemove(BoardDTO dto) {
+		
+		//첨부파일 경로 확인 
+		String email = dto.getWriter();
+		String regdate = dto.getRegdate();
+		regdate = regdate.substring(0,10);
+		String no = String.valueOf(dto.getNo());
+		
+		String dirpath = UploadPath+email+"/"+regdate+"/"+no;
+		//첨부파일 폴더 경로
+		File dir = new File(dirpath);
+		//폴더 경로로 부터 파일리스트 가져오기
+		File [] filelist = dir.listFiles();
+		//첨부파일 모두 삭제
+		for(File filename : filelist)
+		{
+			filename.delete();
+		}
+		//첨부파일 폴더 삭제 
+		dir.delete();
+		
+		
+		return dao.Delete(dto);
+	}
 	
 }

@@ -140,77 +140,114 @@ public class BoardDAO {
 		
 		public BoardDTO Select(int No)
 		{
+			
 			BoardDTO dto = new BoardDTO();
-	           try {
-	            pstmt = conn.prepareStatement("select * from tbl_board where no=?");
-	            pstmt.setInt(1, No);
-	            rs = pstmt.executeQuery();
-	            if(rs.next()) {
-	               dto.setWriter(rs.getString("writer"));
-	               dto.setContent(rs.getString("content"));
-	               dto.setTitle(rs.getString("title"));
-	               dto.setPwd(rs.getString("title"));
-	               dto.setNo(rs.getInt("no"));
-	               dto.setIp(rs.getString("ip"));
-	               dto.setFilename(rs.getString("filename"));
-	               dto.setFilesize(rs.getString("filesize"));
-	               dto.setCount(rs.getInt("count"));
-	               dto.setRegdate(rs.getString("regdate"));
-	               
-	            }
-
-
-		} catch (Exception e) {
-			e.printStackTrace();
+			try {
 			
-		}finally{
-			
-			try {rs.close();}catch(Exception e) {e.printStackTrace();}
-			try {pstmt.close();}catch(Exception e) {e.printStackTrace();}
-		}
-		return dto;
+				pstmt=conn.prepareStatement("select * from tbl_board where no=?");
+				pstmt.setInt(1, No);
+				rs = pstmt.executeQuery();
+				if(rs.next())
+				{
+					dto.setWriter(rs.getString("writer"));
+					dto.setContent(rs.getString("content"));
+					dto.setTitle(rs.getString("title"));
+					dto.setPwd(rs.getString("pwd"));
+					dto.setNo(rs.getInt("no"));
+					dto.setIp(rs.getString("ip"));
+					dto.setFilename(rs.getString("filename"));
+					dto.setFilesize(rs.getString("filesize"));
+					dto.setCount(rs.getInt("count"));
+					dto.setRegdate(rs.getString("regdate"));
+				}
+		
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally{
+				try {rs.close();}catch(Exception e) {e.printStackTrace();}
+				try {pstmt.close();}catch(Exception e) {e.printStackTrace();}
+			}
+			return dto;
 		}
 		
-		//마지막 No 확인
+		//마지막 No 확인 
 		public int getLastNo()
 		{
-			try
+			try 
 			{
-				pstmt = conn.prepareStatement("select /*+index_desc(tbl_board pk_no)*/ rownum rn,no from tbl_board where rownum-1");
+				pstmt=conn.prepareStatement("select /*+INDEX_DESC(tbl_board PK_NO) */ rownum rn,no from tbl_board where rownum=1");
 				rs = pstmt.executeQuery();
 				rs.next();
-				int no = rs.getInt(2); // NO값
-			
+				int no = rs.getInt(2); //no값
+				
 				return no;
-		} catch (Exception e) {
-			e.printStackTrace();
-			
-		}finally{
-			try {rs.close();}catch(Exception e) {e.printStackTrace();}
-			try {pstmt.close();}catch(Exception e) {e.printStackTrace();}
-		}
-			
+			}catch(Exception e) {
+					e.printStackTrace();
+			}finally{
+				try {rs.close();}catch(Exception e) {e.printStackTrace();}
+				try {pstmt.close();}catch(Exception e) {e.printStackTrace();}
+			}			
 			return 0;
 		}
+
 		
-		//카운트 증가
+		//카운트 증가 
 		public void CountUp(int no)
 		{
 			try {
 				
-				pstmt = conn.prepareStatement("update tbl_board set count=count+1 where no =?");
+				pstmt = conn.prepareStatement("update tbl_board set count=count+1 where no=?");
 				pstmt.setInt(1, no);
 				pstmt.executeUpdate();
 				
-		} catch (Exception e) {
-			e.printStackTrace();
-			
-		}finally{
-			try {pstmt.close();}catch(Exception e) {e.printStackTrace();}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally{
+				try {pstmt.close();}catch(Exception e) {e.printStackTrace();}
+			}
 		}
 		
+		public boolean Update(BoardDTO dto)
+		{
+			
+			try {
+			
+				pstmt = conn.prepareStatement("update tbl_board set title=?,content=? where no=?");
+				pstmt.setString(1, dto.getTitle());
+				pstmt.setString(2, dto.getContent());
+				pstmt.setInt(3, dto.getNo());
+				int result=pstmt.executeUpdate();
+				if(result>0)
+					return true;
+			
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally{
+				try {pstmt.close();}catch(Exception e) {e.printStackTrace();}
+			}
+			return false;
+			
+		}
+		
+		
+		
+		public boolean Delete(BoardDTO dto)
+		{
+			
+			try {
+				//DB삭제
+				
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally{
+				
+			}
+			return false;
+		}
+
 	}
-}
+
 
 //try {
 //	
