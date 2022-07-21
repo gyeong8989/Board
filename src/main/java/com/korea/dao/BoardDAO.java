@@ -175,10 +175,10 @@ public class BoardDAO {
 		{
 			try 
 			{
-				pstmt=conn.prepareStatement("select /*+INDEX_DESC(tbl_board PK_NO) */ rownum rn,no from tbl_board where rownum=1");
+				pstmt=conn.prepareStatement("select last_number from user_sequences where sequence_name='TBL_BOARD_SEQ'");
 				rs = pstmt.executeQuery();
 				rs.next();
-				int no = rs.getInt(2); //no값
+				int no = rs.getInt(1); //no값
 				
 				return no;
 			}catch(Exception e) {
@@ -236,12 +236,16 @@ public class BoardDAO {
 			
 			try {
 				//DB삭제
-				
+				pstmt = conn.prepareStatement("delete from tbl_board where no=?");
+				pstmt.setInt(1, dto.getNo());
+				int result = pstmt.executeUpdate();
+				if(result>0)
+					return true;
 				
 			}catch(Exception e) {
 				e.printStackTrace();
 			}finally{
-				
+				try {pstmt.close();}catch(Exception e) {e.printStackTrace();}
 			}
 			return false;
 		}

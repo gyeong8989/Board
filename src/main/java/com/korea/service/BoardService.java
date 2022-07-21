@@ -64,7 +64,7 @@ public class BoardService {
 		String date = simpleDateFormat.format(now); 
 		
 		//게시물 번호받기
-		String no = String.valueOf(dao.getLastNo()+1);
+		String no = String.valueOf(dao.getLastNo());
 		
 		String subPath=email+"/"+date+"/"+no;
 		
@@ -291,24 +291,26 @@ public class BoardService {
 	public boolean BoardRemove(BoardDTO dto) {
 		
 		//첨부파일 경로 확인 
-		String email = dto.getWriter();
-		String regdate = dto.getRegdate();
-		regdate = regdate.substring(0,10);
-		String no = String.valueOf(dto.getNo());
-		
-		String dirpath = UploadPath+email+"/"+regdate+"/"+no;
-		//첨부파일 폴더 경로
-		File dir = new File(dirpath);
-		//폴더 경로로 부터 파일리스트 가져오기
-		File [] filelist = dir.listFiles();
-		//첨부파일 모두 삭제
-		for(File filename : filelist)
+		if(dto.getFilename()!=null)
 		{
-			filename.delete();
+			String email = dto.getWriter();
+			String regdate = dto.getRegdate();
+			regdate = regdate.substring(0,10);
+			String no = String.valueOf(dto.getNo());
+			
+			String dirpath = UploadPath+email+"/"+regdate+"/"+no;
+			//첨부파일 폴더 경로
+			File dir = new File(dirpath);
+			//폴더 경로로 부터 파일리스트 가져오기
+			File [] filelist = dir.listFiles();
+			//첨부파일 모두 삭제
+			for(File filename : filelist)
+			{
+				filename.delete();
+			}
+			//첨부파일 폴더 삭제 
+			dir.delete();
 		}
-		//첨부파일 폴더 삭제 
-		dir.delete();
-		
 		
 		return dao.Delete(dto);
 	}
