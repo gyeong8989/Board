@@ -1,8 +1,6 @@
 package com.korea.controller;
 
 import java.io.IOException;
-
-
 import java.util.HashMap;
 
 import javax.servlet.ServletException;
@@ -13,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.korea.controller.auth.LoginController;
 import com.korea.controller.auth.LogoutController;
-<<<<<<< HEAD
 import com.korea.controller.board.BoardDeleteController;
 import com.korea.controller.board.BoardDownloadAllController;
 import com.korea.controller.board.BoardDownloadController;
@@ -21,33 +18,25 @@ import com.korea.controller.board.BoardListController;
 import com.korea.controller.board.BoardPostController;
 import com.korea.controller.board.BoardReadController;
 import com.korea.controller.board.BoardUpdateController;
-=======
-import com.korea.controller.board.BoardListController;
-import com.korea.controller.board.BoardPostController;
-import com.korea.controller.board.BoardReadController;
->>>>>>> refs/remotes/origin/master
 import com.korea.controller.member.MemberInfoController;
 import com.korea.controller.member.MemberJoinController;
 import com.korea.controller.member.MemberUpdateController;
 import com.korea.controller.notice.NoticeListController;
 import com.korea.controller.notice.NoticePostController;
 
-
 @MultipartConfig
 (
-		fileSizeThreshold = 1024*1024*10, 	//10Mb
-		maxFileSize = 1024*1024*50,			//50Mb
-		maxRequestSize = 1024*1024*100		//100Mb
-		
+		fileSizeThreshold=1024*1024*10,		//10Mb
+		maxFileSize=1024*1024*50,			//50Mb
+		maxRequestSize=1024*1024*100		//100Mb
 )
-
 public class FrontController extends HttpServlet{
-	//URL: SubControlloer 객체주소
-	HashMap<String, SubController> list = null;
-	
+	//URL : SubController객체주소
+	HashMap <String,SubController> list = null;
+		
 	@Override
 	public void init() throws ServletException {
-		list = new HashMap();
+		 list = new HashMap();
 		
 		//회원관련
 		list.put("/MemberJoin.do" , new MemberJoinController());
@@ -60,7 +49,6 @@ public class FrontController extends HttpServlet{
 		list.put("/Logout.do", new LogoutController());
 		System.out.println("프론트 컨트롤러 인증 관련 서비스 손필욱 실행!!");
 		
-<<<<<<< HEAD
 		 //게시판관련
 		 list.put("/Board/list.do", new BoardListController());
 		 list.put("/Board/post.do", new BoardPostController());
@@ -69,12 +57,12 @@ public class FrontController extends HttpServlet{
 		 list.put("/Board/downloadAll.do", new BoardDownloadAllController());
 		 list.put("/Board/update.do", new BoardUpdateController());
 		 list.put("/Board/delete.do", new BoardDeleteController());
-=======
+
 		//게시판관련
 		list.put("/Board/list.do", new BoardListController());
 		list.put("/Board/post.do", new BoardPostController());
 		list.put("/Board/read.do", new BoardReadController());
->>>>>>> refs/remotes/origin/master
+
 		
 		System.out.println("프론트 컨트롤러 게시판 관련 서비스 손필욱 실행!!");
 		

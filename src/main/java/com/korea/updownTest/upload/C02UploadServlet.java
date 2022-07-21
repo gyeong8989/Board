@@ -34,7 +34,7 @@ public class C02UploadServlet extends HttpServlet {
 		//Muliple 반복작업
 		for(Part part : req.getParts())
 		{
-<<<<<<< HEAD
+
 			System.out.println("------------------------------------------------------------------");
 			System.out.println("Part name : " + part.getName());
 			System.out.println("File Size : "  + part.getSize() + " byte");
@@ -42,14 +42,13 @@ public class C02UploadServlet extends HttpServlet {
 			System.out.println("content-disposition : " + part.getHeader("content-disposition"));
 			System.out.println("filename : " + getFileName(part));
 			System.out.println("-------------------------------------------------------------------");
-=======
+
 			System.out.println("Part name : " + part.getName());
 			System.out.println("File Size : "  + part.getSize() + " byte");
 			System.out.println("Header : " + part.getHeaderNames());
 			System.out.println("content-disposition : " + part.getHeader("content-disposition"));
 			System.out.println("filename : " + getFileName(part));
 			System.out.println("--------------------------------------------");
->>>>>>> refs/remotes/origin/master
 		}
 		
 		String id = UUID.randomUUID().toString();
