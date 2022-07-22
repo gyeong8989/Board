@@ -222,22 +222,18 @@
 			<form>
 				<div>
 					<textarea id=comment class="form-control mb-3" style="height:200px;width:580px;" placeholder="댓글을입력해주세요"></textarea>
-					<input type=hidden name=nowPage value=<%=nowPage %> >	
+					<input type=hidden name=nowPage  id=nowPage value=<%=nowPage %> >	
 				</div>
 				<div class="mb-3">
 					<a href="javascript:postreply()" class="btn btn-secondary">댓글 남기기</a>
 				</div>
 			</form>
 			<div class="mb-2">
-				댓글수 : <span>100</span>
-			</div>
+         		댓글 수 : <span id=trcnt></span>
+      		</div>
 			<div style="overflow:auto;height:300px;width:580px;" id="replylist">
 				<!-- 여기에 댓글리스트가 출력되어야함 -->
-				<div class="form-control">
-					<span style=font-size:0.5rem>example@example.com</span>&nbsp;&nbsp;
-					<span style=font-size:0.5rem>2022-07-21</span><br>
-					<span>글내용입니다아~~~</span>
-				</div>
+				
 			</div>
 		</div> 
 		<!-- 댓글남기기 끝 -->	
@@ -245,14 +241,53 @@
 			function postreply()
 			{
 				//댓글 등록
+				$.ajax({
+					url:'/Board/replypost.do',
+					type:'GET',
+					data:{"comment":$('#comment').val()},
+					error:function(){
+						alert("에러~");
+					},
+					success:function(result){
+						listreply();
+						$('#comment').val("");
+					}			
+				});
 			}
 			function listreply()
 			{
-				//댓글 목록 가져오기
+				//댓글 등록
+				$.ajax({
+					url:'/Board/replylist.do',
+					type:'GET',
+					error:function(){
+						alert("에러~");
+					},
+					success:function(result){
+						//alert(result);
+						$("#replylist").html(result);
+						totalreplycnt();
+					}			
+				});
+				
 			}
+			listreply();
+			
 			function totalreplycnt()
 			{
 				//댓글 수 
+				$.ajax({
+					url:'/Board/replycnt.do',
+					type:'GET',
+					error:function(){
+						alert("ERROR~");
+					},
+					success:function(result){
+						//alert(result);
+						$('#trcnt').html(result);
+					}			
+				});
+				
 			}
 		</script>
 

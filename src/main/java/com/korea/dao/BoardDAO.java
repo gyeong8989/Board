@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.korea.dto.BoardDTO;
+import com.korea.dto.ReplyDTO;
 
 public class BoardDAO {
 	//DB연결
@@ -248,6 +249,78 @@ public class BoardDAO {
 		}
 		return false;
 	}
+	
+	//댓글달기 
+		public boolean replypost(ReplyDTO rdto) {
+			try {
+				
+				pstmt = conn.prepareStatement("insert into tbl_reply values(REPLY_SEQ.NEXTVAL,?,?,?,sysdate)");
+				pstmt.setInt(1, rdto.getBno());
+				pstmt.setString(2, rdto.getWriter());
+				pstmt.setString(3, rdto.getContent());
+				int result=pstmt.executeUpdate();
+				if(result>0)
+					return true;
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally{
+				try {pstmt.close();}catch(Exception e) {e.printStackTrace();}
+			}
+			return false;
+			
+		}
+		
+		//댓글가져오기
+		public ArrayList<ReplyDTO> getReplylist(int bno){
+			
+			ArrayList<ReplyDTO> list = new ArrayList();
+			ReplyDTO dto=null;
+			try {
+				pstmt = conn.prepareStatement("select * from tbl_reply where bno=? order by rno desc");
+				pstmt.setInt(1, bno);
+				rs=pstmt.executeQuery();
+				while(rs.next())
+				{
+					dto = new ReplyDTO();
+					dto.setRno(rs.getInt("rno"));
+					dto.setBno(rs.getInt("bno"));
+					dto.setContent(rs.getString("content"));
+					dto.setWriter(rs.getString("writer"));
+					dto.setRegdate(rs.getString("regdate"));
+					list.add(dto);	
+				}		
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally{
+				try {rs.close();}catch(Exception e) {e.printStackTrace();}
+				try {pstmt.close();}catch(Exception e) {e.printStackTrace();}
+			}
+			return list;
+		}
+		
+		//댓글 카운트
+		public int getTotalReplyCnt(int bno) {
+			
+			int tcnt=0;
+			try {
+				
+				pstmt = conn.prepareStatement("select count(*) from tbl_reply where bno=?");
+				pstmt.setInt(1, bno);
+				rs=pstmt.executeQuery();
+				rs.next();
+				
+				tcnt=rs.getInt(1);
+				
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally{
+			try {rs.close();}catch(Exception e) {e.printStackTrace();}
+			try {pstmt.close();}catch(Exception e) {e.printStackTrace();}
+		}
+		return tcnt;
+		}
 
 }
 

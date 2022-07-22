@@ -21,6 +21,7 @@ import javax.servlet.http.Part;
 
 import com.korea.dao.BoardDAO;
 import com.korea.dto.BoardDTO;
+import com.korea.dto.ReplyDTO;
 
 public class BoardService {
 
@@ -314,5 +315,21 @@ public class BoardService {
 		
 		return dao.Delete(dto);
 	}
+	
+	//댓글달기
+		public boolean replypost(ReplyDTO rdto) {
+			return dao.replypost(rdto);
+		}
+		
+		//댓글가져오기
+		public ArrayList<ReplyDTO> getReplylist(int bno){
+			return dao.getReplylist(bno);
+		}
+		
+		
+		public int getTotalReplyCnt(int bno) {
+			
+			return dao.getTotalReplyCnt(bno);
+		}
 	
 }
