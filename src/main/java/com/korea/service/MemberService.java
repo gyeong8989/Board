@@ -36,6 +36,6 @@ public class MemberService {
 	}
 	public boolean MemberUpdate(MemberDTO dto) {
 		
-		return dao.update(dto);
+		return dao.Update(dto);
 	}
 }

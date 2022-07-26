@@ -5,20 +5,18 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import org.apache.catalina.webresources.EmptyResource;
-
 import com.korea.dto.MemberDTO;
 
 public class MemberDAO {
-	
-	//DB 연결
+
+	//DB연결
 	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
 	private String id = "book_ex";
 	private String pw = "1234";
 	
 	private Connection conn=null;
 	private PreparedStatement pstmt = null;
-	private ResultSet rs = null;
+	private ResultSet rs=null;
 	
 	//싱글톤 패턴
 	private static MemberDAO instance;
@@ -30,41 +28,37 @@ public class MemberDAO {
 	private MemberDAO() {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection(url,id,pw);
-			System.out.println("DBConnected..필욱이 연결 완료");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			conn = DriverManager.getConnection(url, id, pw);
+			System.out.println("DBConnected..");
+		}catch(Exception e) {e.printStackTrace();}
+		
 	}
 	
 	//INSERT 함수
 	public boolean insert(MemberDTO dto)
 	{
 		try {
-			
-			
-			pstmt=conn.prepareStatement("insert into tbl_member values(?,?,?,?,?)");
+			pstmt=conn.prepareStatement("insert into tbl_member values(?,?,?,?,?,?)");
 			pstmt.setString(1, dto.getEmail());
 			pstmt.setString(2, dto.getPwd());
 			pstmt.setString(3, dto.getAddr1());
 			pstmt.setString(4, dto.getAddr2());
 			pstmt.setInt(5, dto.getGrade());
+			pstmt.setString(6, dto.getZipcode());
+			
 			int result = pstmt.executeUpdate();
 			if(result>0)
 				return true;
-			
-		} catch (Exception e) {
+
+		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
-			try {
-				
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
+			try{pstmt.close();}catch(Exception e1) {e1.printStackTrace();}
 		}
 		
 		return false;
 	}
+	
 	
 	public MemberDTO Select(String email)
 	{
@@ -74,7 +68,6 @@ public class MemberDAO {
 			pstmt.setString(1, email);
 			
 			rs = pstmt.executeQuery();
-			
 			
 			if(rs.next())
 			{
@@ -87,43 +80,45 @@ public class MemberDAO {
 			}
 			
 			
-		} catch (Exception e) {
+			
+		}catch(Exception e) {
 			e.printStackTrace();
+			 
 		}finally {
-			try {
-				rs.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			} 
-			try {
-				pstmt.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			try{rs.close();}catch(Exception e) {e.printStackTrace();}
+			try{pstmt.close();}catch(Exception e) {e.printStackTrace();}
 		}
-		
 		return null;
+		
 	}
 	
-	public boolean update(MemberDTO dto) {
+	
+	public boolean Update(MemberDTO dto) {
 		
 		try {
-			pstmt=conn.prepareStatement("update tbl_member set addr1=?,addr2=?,grade=?,pwd=? where email=?");
+			
+			
+			pstmt=conn.prepareStatement
+					("update tbl_member set addr1=?,addr2=?,grade=?,pwd=? where email=?");
 			pstmt.setString(1, dto.getAddr1());
 			pstmt.setString(2, dto.getAddr2());
 			pstmt.setInt(3, dto.getGrade());
-			pstmt.setString(4, dto.getPwd());
+			pstmt.setString(4,dto.getPwd());
 			pstmt.setString(5,dto.getEmail());
 			
 			int result = pstmt.executeUpdate();
 			
 			if(result>0)
 				return true;
-		} catch (Exception e) {
+		}catch(Exception e) {
 			e.printStackTrace();
-			
+		
 		}
+		
 		
 		return false;
 	}
+	
+	
+	
 }

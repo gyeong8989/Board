@@ -42,11 +42,14 @@ public class FrontController extends HttpServlet{
 		 list = new HashMap();
 		
 		//회원관련
-		list.put("/MemberJoin.do" , new MemberJoinController());
-		list.put("/MemberInfo.do", new MemberInfoController());
-		list.put("/MemberUpdate.do", new MemberUpdateController());
-		System.out.println("프론트 컨트롤러 회원 관련 서비스 손필욱 실행!!");
-		
+		 list.put("/MemberJoin.do", new MemberJoinController());
+		 list.put("/MemberInfo.do", new MemberInfoController());
+		 list.put("/MemberUpdate.do", new MemberUpdateController());
+		 
+		 //기본
+		 list.put("/index.do", new IndexController());
+		 list.put("/main.do", new MainController());
+		 
 		//인증관련
 		list.put("/Login.do",  new LoginController());
 		list.put("/Logout.do", new LogoutController());
